@@ -1,0 +1,78 @@
+{% extends 'web/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="display-4">Dashboard</h1>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-4 mb-4">
+        <div class="card boxy-card">
+            <div class="card-body text-center">
+                <h3>Total Contributions</h3>
+                <h2 class="display-4">{{ total_contributions }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card boxy-card">
+            <div class="card-body text-center">
+                <h3>Total Amount</h3>
+                <h2 class="display-4">${{ total_amount }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card boxy-card">
+            <div class="card-body text-center">
+                <h3>Contribution Types</h3>
+                <div class="list-group">
+                    {% for counter in counters %}
+                    <div class="list-group-item">
+                        {{ counter.get_contribution_type_display }}: {{ counter.count }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card boxy-card">
+            <div class="card-body">
+                <h3 class="card-title">Recent Contributions</h3>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Receipt Number</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for contribution in contributions %}
+                            <tr>
+                                <td>{{ contribution.receipt_number }}</td>
+                                <td>{{ contribution.first_name }} {{ contribution.last_name }}</td>
+                                <td>{{ contribution.get_contribution_type_display }}</td>
+                                <td>${{ contribution.amount }}</td>
+                                <td>{{ contribution.date_contributed|date:"F j, Y" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,142 @@
+{% extends 'web/base.html' %}
+{% load static %}
+
+{% block title %}Projects - UMSC Zakah & Sadaqa{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold mb-3">Our Projects</h1>
+        <p class="lead text-muted">Support our ongoing initiatives and help make a difference in our community</p>
+    </div>
+
+    <div class="row g-4">
+        {% for project in projects %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm hover-shadow">
+                {% if project.image %}
+                <img src="{{ project.image.url }}" class="card-img-top" alt="{{ project.title }}" style="height: 200px; object-fit: cover;">
+                {% else %}
+                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                    <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                </div>
+                {% endif %}
+                
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="badge bg-{{ project.status|lower }}">{{ project.get_status_display }}</span>
+                        <small class="text-muted">{{ project.created_at|date:"M d, Y" }}</small>
+                    </div>
+                    
+                    <h5 class="card-title">{{ project.title }}</h5>
+                    <p class="card-text text-muted">{{ project.description|truncatewords:30 }}</p>
+                    
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="text-muted">Progress</span>
+                            <span class="fw-bold">{{ project.progress_percentage }}%</span>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar bg-success" role="progressbar" 
+                                 style="width: {{ project.progress_percentage }}%" 
+                                 aria-valuenow="{{ project.progress_percentage }}" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <small class="text-muted">Raised</small>
+                            <h6 class="mb-0 amount-counter" data-amount="{{ project.current_amount|floatformat:0 }}">{{ project.current_amount|floatformat:0 }}</h6>
+                        </div>
+                        <div class="text-end">
+                            <small class="text-muted">Target</small>
+                            <h6 class="mb-0 amount-counter" data-amount="{{ project.target_amount|floatformat:0 }}">{{ project.target_amount|floatformat:0 }}</h6>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-footer bg-transparent border-0">
+                    <div class="d-grid">
+                        <a href="{% url 'web:pay_projects' %}?project={{ project.id }}" class="btn btn-success">
+                            <i class="bi bi-heart-fill me-2"></i>Support This Project
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle me-2"></i>
+                No projects available at the moment. Please check back later.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .hover-shadow {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+    .hover-shadow:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    }
+    .badge.bg-upcoming {
+        background-color: #6c757d;
+    }
+    .badge.bg-ongoing {
+        background-color: #198754;
+    }
+    .badge.bg-completed {
+        background-color: #0d6efd;
+    }
+    .amount-counter {
+        font-weight: 600;
+        color: var(--primary-color);
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Function to animate counting
+        function animateCounter(element, target) {
+            let current = 0;
+            const duration = 2000; // 2 seconds
+            const steps = 60;
+            const increment = target / steps;
+            
+            const interval = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(interval);
+                }
+                element.textContent = 'UGX ' + Math.floor(current).toLocaleString();
+            }, duration / steps);
+        }
+
+        // Create an Intersection Observer to trigger animations when elements come into view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const amountElement = entry.target;
+                    const targetAmount = parseInt(amountElement.dataset.amount);
+                    animateCounter(amountElement, targetAmount);
+                    observer.unobserve(amountElement); // Stop observing once animated
+                }
+            });
+        }, { threshold: 0.5 }); // Trigger when 50% of the element is visible
+
+        // Observe all amount elements
+        document.querySelectorAll('.amount-counter').forEach(element => {
+            observer.observe(element);
+        });
+    });
+</script>
+{% endblock %} 

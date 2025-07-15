@@ -1,0 +1,266 @@
+{% extends 'web/base.html' %}
+{% load humanize %}
+
+{% block title %}Make a Contribution{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="boxy-card">
+                <div class="card-body p-4">
+                    <h1 class="h2 mb-4 text-center">
+                        <i class="bi bi-heart-fill text-primary me-2"></i>
+                        {% if contribution_type == 'ZAKAH' %}
+                        Pay Zakah
+                        {% elif contribution_type == 'SADAQA' %}
+                        Give Sadaqa
+                        {% else %}
+                        Support Projects
+                        {% endif %}
+                    </h1>
+
+                    {% if contribution_type == 'ZAKAH' and current_nisab %}
+                    <div class="alert alert-info mb-4">
+                        <div class="d-flex align-items-center">
+                            <div class="alert-icon">
+                                <i class="bi bi-info-circle-fill"></i>
+                            </div>
+                            <div>
+                                <div class="mb-1">Current Nisab Value</div>
+                                <div class="h4 mb-1 currency">{{ current_nisab.currency }} {{ current_nisab.amount|intcomma }}</div>
+                                <small class="text-muted">Last Updated: {{ current_nisab.last_updated|date:"d M Y" }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <form method="post" class="contribution-form">
+                        {% csrf_token %}
+                        
+                        {% if contribution_type == 'ZAKAH' %}
+                        <div class="mb-4">
+                            <label class="form-label">
+                                <i class="bi bi-collection me-2"></i>Zakah Type
+                            </label>
+                            {{ form.zakah_type }}
+                        </div>
+
+                        <div id="fitri_section" class="mb-4" style="display: none;">
+                            <label class="form-label">
+                                <i class="bi bi-people me-2"></i>Number of People
+                            </label>
+                            {{ form.number_of_people }}
+                            <div class="form-text">Enter the number of people you're paying Zakah al-Fitr for</div>
+                        </div>
+                        {% endif %}
+
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="bi bi-person me-2"></i>First Name
+                                    </label>
+                                    {{ form.first_name }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="bi bi-person me-2"></i>Last Name
+                                    </label>
+                                    {{ form.last_name }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="bi bi-phone me-2"></i>Phone Number
+                                    </label>
+                                    {{ form.phone_number }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="bi bi-cash-stack me-2"></i>Amount (UGX)
+                                    </label>
+                                    {{ form.amount }}
+                                </div>
+                            </div>
+                        </div>
+
+                        {% if contribution_type == 'PROJECTS' %}
+                        <div class="mb-4">
+                            <label class="form-label">
+                                <i class="bi bi-building me-2"></i>Select Project
+                            </label>
+                            {{ form.project }}
+                        </div>
+                        {% endif %}
+
+                        <div class="mb-4">
+                            <label class="form-label">
+                                <i class="bi bi-building me-2"></i>Select District
+                            </label>
+                            {{ form.district }}
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg px-5">
+                                <i class="bi bi-heart-fill me-2"></i>Pay Now
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            {% if counter %}
+            <div class="boxy-card mt-4">
+                <div class="card-body p-4">
+                    <div class="text-center">
+                        <h3 class="h4 mb-3">Contribution Statistics</h3>
+                        <div class="row">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <div class="stat-item">
+                                    <div class="stat-label">Total Contributors</div>
+                                    <div class="stat-value">{{ counter.count }}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="stat-item">
+                                    <div class="stat-label">Total Amount</div>
+                                    <div class="stat-value currency">UGX {{ counter.total_amount|intcomma }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .contribution-form .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .contribution-form .form-label {
+        font-weight: 500;
+        margin-bottom: 0.75rem;
+        color: var(--text-color);
+        display: flex;
+        align-items: center;
+    }
+
+    .contribution-form .form-label i {
+        color: var(--primary-color);
+    }
+
+    .contribution-form .form-control,
+    .contribution-form .form-select {
+        border-radius: var(--border-radius);
+        padding: 0.75rem 1rem;
+        border: 2px solid rgba(0, 0, 0, 0.1);
+        transition: var(--transition);
+        background-color: var(--secondary-color);
+    }
+
+    .contribution-form .form-control:focus,
+    .contribution-form .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(5, 144, 78, 0.15);
+    }
+
+    .alert-icon {
+        width: 48px;
+        height: 48px;
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        font-size: 1.25rem;
+    }
+
+    .stat-item {
+        padding: 1rem;
+        background-color: var(--success-bg);
+        border-radius: var(--border-radius);
+        transition: var(--transition);
+    }
+
+    .stat-item:hover {
+        transform: translateY(-2px);
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        color: var(--text-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--primary-color);
+    }
+
+    .form-text {
+        font-size: 0.875rem;
+        color: var(--text-color);
+        margin-top: 0.25rem;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const zakahTypeSelect = document.getElementById('id_zakah_type');
+    const fitriSection = document.getElementById('fitri_section');
+    const numberPeopleInput = document.getElementById('id_number_of_people');
+    const amountInput = document.getElementById('id_amount');
+
+    if (zakahTypeSelect) {
+        // Set initial visibility
+        const isFitri = zakahTypeSelect.value === 'FITRI';
+        fitriSection.style.display = isFitri ? 'block' : 'none';
+        numberPeopleInput.required = isFitri;
+
+        // Handle changes
+        zakahTypeSelect.addEventListener('change', function() {
+            const isFitri = this.value === 'FITRI';
+            fitriSection.style.display = isFitri ? 'block' : 'none';
+            numberPeopleInput.required = isFitri;
+            
+            if (isFitri) {
+                if (!numberPeopleInput.value) {
+                    numberPeopleInput.value = '1';
+                }
+            } else {
+                numberPeopleInput.value = '';
+            }
+        });
+
+        // Handle form submission
+        const form = document.querySelector('form.contribution-form');
+        form.addEventListener('submit', function(e) {
+            if (zakahTypeSelect.value === 'FITRI' && !numberPeopleInput.value) {
+                e.preventDefault();
+                alert('Please enter the number of people for Zakah al-Fitr');
+                numberPeopleInput.focus();
+            }
+        });
+    }
+});
+</script>
+{% endblock %} 

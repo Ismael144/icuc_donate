@@ -1,0 +1,163 @@
+{% extends 'web/base.html' %}
+{% load humanize %}
+
+{% block title %}
+  Overall Contributions
+{% endblock %}
+
+{% block content %}
+  <div class="container py-4">
+    <div class="text-center mb-5">
+      <h1 class="display-5 fw-bold text-primary">Contribution Overview</h1>
+      <p class="lead text-muted">Summary of all contributions for {{ current_year }}</p>
+    </div>
+
+    <!-- Summary Section -->
+    <div class="row justify-content-center mb-5">
+      <div class="col-md-8 text-center">
+        <div class="p-4 bg-light rounded-3">
+          <h2 class="display-6 mb-3">Total Contributions</h2>
+          <div class="d-flex justify-content-center gap-4">
+            <div>
+              <h3 class="text-primary">{{ total_contributions|intcomma }}</h3>
+              <p class="text-muted mb-0">Contributors</p>
+            </div>
+            <div>
+              <h3 class="text-success">UGX {{ total_amount|floatformat:0|intcomma }}</h3>
+              <p class="text-muted mb-0">Total Amount</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contribution Types -->
+    <div class="row mb-5">
+      <div class="col-12">
+        <h3 class="text-center mb-4">Contribution Types</h3>
+        <div class="row g-4">
+          {% for type in type_breakdown %}
+            <div class="col-md-6 col-lg-3">
+              <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                  <div class="mb-3">
+                    <i class="bi bi-{% if type.type == 'Zakah' %}
+                        coin
+                      {% elif type.type == 'Sadaqa' %}
+                        heart
+                      {% elif type.type == 'Fitra' %}
+                        gift
+                      {% else %}
+                        briefcase
+                      {% endif %} fs-1 text-{{ type.color }}">
+
+                    </i>
+                  </div>
+                  <h4 class="card-title">{{ type.type }}</h4>
+                  <p class="card-text">
+                    <span class="d-block fs-4">{{ type.count|intcomma }}</span>
+                    <small class="text-muted">contributions</small>
+                  </p>
+                  <div class="progress" style="height: 4px;">
+                    <div class="progress-bar bg-{{ type.color }}" role="progressbar" style="width: {{ type.percentage }}%" aria-valuenow="{{ type.percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                  <p class="mt-2 mb-0 text-{{ type.color }}">{{ type.percentage|floatformat:1 }}% of total</p>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <h3 class="text-center mb-4">District Contributions Summary</h3>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>District Name</th>
+                            <th class="text-end">Contributors Count</th>
+                            <th class="text-end">Total Amount (UGX)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in district_data %}
+                        <tr>
+                            <td>{{ entry.district.name }}</td>
+                            <td class="text-end">{{ entry.contributors_count }}</td>
+                            <td class="text-end">UGX {{ entry.total_amount|floatformat:0|intcomma }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-center">No data available.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- Monthly Breakdown -->
+    <div class="row">
+      <div class="col-12">
+        <h3 class="text-center mb-4">Monthly Contributions</h3>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Month</th>
+                <th class="text-end">Amount</th>
+                <th class="text-end">Percentage</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for month in monthly_data %}
+                <tr>
+                  <td>{{ month.month }}</td>
+                  <td class="text-end">UGX {{ month.amount|floatformat:0|intcomma }}</td>
+                  <td class="text-end">
+                    <div class="d-flex align-items-center justify-content-end">
+                      <div class="progress flex-grow-1" style="width: 100px; height: 4px;">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: {{ month.percentage }}%" aria-valuenow="{{ month.percentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                      <span class="ms-2">{{ month.percentage|floatformat:1 }}%</span>
+                    </div>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_css %}
+  <style>
+    .card {
+      transition: transform 0.2s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-2px);
+    }
+    
+    .progress {
+      background-color: rgba(0, 0, 0, 0.05);
+      border-radius: 2px;
+    }
+    
+    .table th {
+      font-weight: 600;
+      color: #6c757d;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+    }
+  </style>
+{% endblock %}

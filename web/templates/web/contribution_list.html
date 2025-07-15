@@ -1,0 +1,65 @@
+{% extends 'web/base.html' %}
+{% load humanize %}
+
+{% block title %}{{ contribution_type }} Contributions{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card boxy-card mb-4">
+        <div class="card-body text-center">
+            <h1 class="display-4 mb-4">
+                <i class="bi bi-cash-stack text-primary"></i>
+                <br>{{ contribution_type }} Summary
+            </h1>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="stat-card">
+                        <i class="bi bi-people-fill"></i>
+                        <h3>Total Contributions</h3>
+                        <p class="display-4">{{ counter.count|intcomma }}</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="stat-card">
+                        <i class="bi bi-cash"></i>
+                        <h3>Total Amount</h3>
+                        <p class="display-4">UGX {{ counter.total_amount|floatformat:0|intcomma }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .stat-card {
+        background-color: var(--success-bg);
+        border-radius: var(--border-radius);
+        padding: 2rem;
+        margin-bottom: 1rem;
+        transition: var(--transition);
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .stat-card i {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+    }
+
+    .stat-card h3 {
+        color: var(--text-color);
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-card .display-4 {
+        color: var(--primary-color);
+        font-weight: 600;
+        margin-bottom: 0;
+    }
+</style>
+{% endblock %} 

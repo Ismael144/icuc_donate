@@ -1,0 +1,331 @@
+{% extends 'web/base.html' %}
+
+{% block title %}Ongoing Projects{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="projects-hero mb-5">
+    <div class="hero-content text-center">
+        <h1 class="display-4">
+            <i class="bi bi-building icon-large text-primary"></i>
+            <br>Ongoing Projects
+        </h1>
+        <p class="lead">Support our community initiatives and make a lasting impact</p>
+    </div>
+</div>
+
+<!-- Projects List -->
+<div class="row">
+	<style>
+		.project-card {
+			padding: 20px;
+		}
+	</style>
+    <!-- Masjid Renovation Project -->
+    <div class="col-md-6 mb-4">
+        <div class="project-card boxy-card h-100">
+            <div class="project-image">
+                <img src="https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&w=800&h=400&q=80" alt="Masjid Renovation" class="img-fluid">
+                <div class="project-progress">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Progress</span>
+                        <span>65%</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="project-status">Ongoing</div>
+                <h3 class="project-title">Masjid Renovation</h3>
+                <p class="project-description">Help us renovate and expand our masjid to accommodate our growing community. The project includes prayer hall expansion, improved ventilation, and new facilities.</p>
+                <div class="project-stats">
+                    <div class="stat">
+                        <i class="bi bi-cash-stack"></i>
+                        <div class="stat-details">
+                            <span class="stat-label">Target</span>
+                            <span class="stat-value">UGX 50,000,000</span>
+                        </div>
+                    </div>
+                    <div class="stat">
+                        <i class="bi bi-people-fill"></i>
+                        <div class="stat-details">
+                            <span class="stat-label">Supporters</span>
+                            <span class="stat-value">124</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="{% url 'web:pay_projects' %}" class="btn btn-primary mt-3 w-100">
+                    <i class="bi bi-heart-fill me-2"></i>Support This Project
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Islamic Library Project -->
+    <div class="col-md-6 mb-4">
+        <div class="project-card boxy-card h-100">
+            <div class="project-image">
+                {% comment %} <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=800&h=400&q=80" alt="Islamic Library" class="img-fluid"> {% endcomment %}
+                <div class="project-progress">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Progress</span>
+                        <span>40%</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="project-status">Ongoing</div>
+                <h3 class="project-title">Islamic Library</h3>
+                <p class="project-description">Support our initiative to establish a comprehensive Islamic library with books, digital resources, and study areas for our community.</p>
+                <div class="project-stats">
+                    <div class="stat">
+                        <i class="bi bi-cash-stack"></i>
+                        <div class="stat-details">
+                            <span class="stat-label">Target</span>
+                            <span class="stat-value">UGX 30,000,000</span>
+                        </div>
+                    </div>
+                    <div class="stat">
+                        <i class="bi bi-people-fill"></i>
+                        <div class="stat-details">
+                            <span class="stat-label">Supporters</span>
+                            <span class="stat-value">86</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="{% url 'web:pay_projects' %}" class="btn btn-primary mt-3 w-100">
+                    <i class="bi bi-heart-fill me-2"></i>Support This Project
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Community Center Project -->
+    <div class="col-md-6 mb-4">
+        <div class="project-card boxy-card h-100">
+            <div class="project-image">
+                <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=800&h=400&q=80" alt="Community Center" class="img-fluid">
+                <div class="project-progress">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Progress</span>
+                        <span>25%</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="project-status">New</div>
+                <h3 class="project-title">Community Center</h3>
+                <p class="project-description">Help us build a modern community center for educational programs, youth activities, and community gatherings.</p>
+                <div class="project-stats">
+                    <div class="stat">
+                        <i class="bi bi-cash-stack"></i>
+                        <div class="stat-details">
+                            <span class="stat-label">Target</span>
+                            <span class="stat-value">UGX 80,000,000</span>
+                        </div>
+                    </div>
+                    <div class="stat">
+                        <i class="bi bi-people-fill"></i>
+                        <div class="stat-details">
+                            <span class="stat-label">Supporters</span>
+                            <span class="stat-value">52</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="{% url 'web:pay_projects' %}" class="btn btn-primary mt-3 w-100">
+                    <i class="bi bi-heart-fill me-2"></i>Support This Project
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upcoming Project -->
+    <div class="col-md-6 mb-4">
+        <div class="project-card boxy-card h-100">
+            <div class="project-image">
+                <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&w=800&h=400&q=80" alt="Education Support" class="img-fluid">
+                <div class="project-progress">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Progress</span>
+                        <span>10%</span>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="project-status status-upcoming">Coming Soon</div>
+                <h3 class="project-title">Education Support Program</h3>
+                <p class="project-description">An upcoming initiative to provide educational support, scholarships, and resources for students in our community.</p>
+                <div class="project-stats">
+                    <div class="stat">
+                        <i class="bi bi-cash-stack"></i>
+                        <div class="stat-details">
+                            <span class="stat-label">Target</span>
+                            <span class="stat-value">UGX 25,000,000</span>
+                        </div>
+                    </div>
+                    <div class="stat">
+                        <i class="bi bi-calendar-event"></i>
+                        <div class="stat-details">
+                            <span class="stat-label">Starting</span>
+                            <span class="stat-value">Coming Soon</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-outline-primary mt-3 w-100" disabled>
+                    <i class="bi bi-clock-fill me-2"></i>Coming Soon
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .projects-hero {
+        text-align: center;
+        padding: 3rem 0;
+        background-color: var(--success-bg);
+        border-radius: var(--border-radius);
+        margin-bottom: 3rem;
+    }
+
+    .icon-large {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        display: inline-block;
+    }
+
+    .project-card {
+        transition: var(--transition);
+        overflow: hidden;
+    }
+
+    .project-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .project-image {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .project-image img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        border-top-left-radius: var(--border-radius);
+        border-top-right-radius: var(--border-radius);
+    }
+
+    .project-progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 1rem;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(5px);
+        color: white;
+    }
+
+    .progress {
+        height: 8px;
+        border-radius: 4px;
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .progress-bar {
+        background-color: var(--primary-color);
+    }
+
+    .project-status {
+        display: inline-block;
+        padding: 0.25rem 1rem;
+        border-radius: 15px;
+        background-color: var(--success-bg);
+        color: var(--primary-color);
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin-bottom: 1rem;
+    }
+
+    .status-upcoming {
+        background-color: #fff3e0;
+        color: #f57c00;
+    }
+
+    .project-title {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        color: var(--text-color);
+    }
+
+    .project-description {
+        color: var(--text-color);
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+
+    .project-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        background-color: var(--success-bg);
+        border-radius: var(--border-radius);
+    }
+
+    .stat {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .stat i {
+        font-size: 1.5rem;
+        color: var(--primary-color);
+    }
+
+    .stat-details {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .stat-label {
+        font-size: 0.85rem;
+        color: var(--text-color);
+    }
+
+    .stat-value {
+        font-weight: 600;
+        color: var(--primary-color);
+    }
+
+    @media (max-width: 768px) {
+        .projects-hero {
+            padding: 2rem 1rem;
+        }
+
+        .project-image img {
+            height: 200px;
+        }
+
+        .project-stats {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %} 

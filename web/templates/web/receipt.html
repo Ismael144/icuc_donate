@@ -1,0 +1,206 @@
+{% extends 'web/base.html' %}
+{% load humanize %}
+{% load static %}
+
+{% block title %}Receipt - {{ contribution.receipt_number }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .receipt-card {
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 2rem;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+
+    .receipt-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .receipt-title {
+        font-size: 2rem;
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .receipt-number {
+        font-size: 1.1rem;
+        color: #666;
+    }
+
+    .receipt-details {
+        margin-bottom: 2rem;
+    }
+
+    .receipt-details p {
+        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
+    }
+
+    .receipt-amount {
+        font-size: 2rem;
+        font-weight: 600;
+        color: var(--primary-color);
+        margin: 2rem 0;
+        text-align: center;
+    }
+
+    .receipt-footer {
+        text-align: center;
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid #eee;
+    }
+
+    .receipt-footer p {
+        margin-bottom: 0.5rem;
+        color: #666;
+    }
+
+    .receipt-qr {
+        text-align: center;
+        margin: 1.5rem 0;
+    }
+
+    .receipt-qr img {
+        max-width: 200px;
+        height: auto;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div id="printMe" class="receipt-card">
+        <div class="receipt-header">
+            <h1 class="receipt-title">UMSC Donate</h1>
+            <p class="receipt-number">Receipt #{{ contribution.receipt_number }}</p>
+        </div>
+
+        <div class="receipt-details">
+            <p><strong>Date:</strong> {{ contribution.date_contributed|date:"F j, Y" }}</p>
+            <p><strong>Contributor:</strong> {{ contribution.first_name }} {{ contribution.last_name }}</p>
+            <p><strong>Phone:</strong> {{ contribution.phone_number }}</p>
+            <p><strong>Type:</strong> {{ contribution.get_contribution_type_display }}</p>
+            <p><strong>District:</strong> {{ contribution.district }}</p>
+            <p><strong>Payment Method:</strong> {{ contribution.get_payment_method_display }}</p>
+            {% if contribution.project %}
+            <p><strong>Project:</strong> {{ contribution.project.name }}</p>
+            {% endif %}
+        </div>
+
+        <div class="receipt-amount">
+            UGX {{ contribution.amount|intcomma }}
+        </div>
+
+        <div class="receipt-footer">
+            <p>Thank you for your contribution!</p>
+            <p>May the Al Mighty bless you, purify & increase your wealth.</p>
+            <p>مَثَلُ الَّذِينَ يُنْفِقُونَ أَمْوَالَهُمْ فِي سَبِيلِ اللَّهِ كَمَثَلِ حَبَّةٍ أَنْبَتَتْ سَبْعَ سَنَابِلَ، فِي كُلِّ سُنْبُلَةٍ مِائَةُ حَبَّةٍ، وَاللَّهُ يُضَاعِفُ لِمَنْ يَشَاءُ، وَاللَّهُ وَاسِعٌ عَلِيمٌ</p>
+            <p>Generated on {{ contribution.date_contributed|date:"F j, Y, g:i a" }}</p>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <button onclick="printElement('printMe')" class="btn btn-primary">
+            <i class="bi bi-printer me-2"></i>Print Receipt
+        </button>
+        <a href="{% url 'web:home' %}" class="btn btn-outline-primary ms-2">
+            <i class="bi bi-house me-2"></i>Return Home
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function printElement(elementId) {
+    const content = document.getElementById(elementId).innerHTML;
+    const printWindow = window.open('', '', 'height=600,width=800');
+    
+    printWindow.document.write(`
+        <html>
+            <head>
+                <title>Receipt - {{ contribution.receipt_number }}</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        padding: 20px;
+                        margin: 0;
+                    }
+                    .receipt-card {
+                        max-width: 600px;
+                        margin: 0 auto;
+                        padding: 20px;
+                    }
+                    .receipt-header {
+                        text-align: center;
+                        margin-bottom: 20px;
+                        border-bottom: 2px solid #2e7d32;
+                        padding-bottom: 10px;
+                    }
+                    .receipt-title {
+                        font-size: 24px;
+                        font-weight: 600;
+                        color: #2e7d32;
+                        margin-bottom: 5px;
+                    }
+                    .receipt-number {
+                        font-size: 16px;
+                        color: #666;
+                    }
+                    .receipt-details {
+                        margin-bottom: 20px;
+                    }
+                    .receipt-details p {
+                        margin-bottom: 8px;
+                        font-size: 16px;
+                    }
+                    .receipt-amount {
+                        font-size: 24px;
+                        font-weight: 600;
+                        color: #2e7d32;
+                        margin: 20px 0;
+                        text-align: center;
+                    }
+                    .receipt-footer {
+                        text-align: center;
+                        margin-top: 20px;
+                        padding-top: 10px;
+                        border-top: 2px solid #2e7d32;
+                    }
+                    .receipt-footer p {
+                        margin-bottom: 5px;
+                        font-size: 14px;
+                        color: #666;
+                    }
+                    .receipt-qr {
+                        text-align: center;
+                        margin: 15px 0;
+                    }
+                    .receipt-qr img {
+                        max-width: 150px;
+                        height: auto;
+                    }
+                    @page {
+                        size: A5;
+                        margin: 1cm;
+                    }
+                </style>
+            </head>
+            <body>
+                ${content}
+            </body>
+        </html>
+    `);
+    
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+    printWindow.close();
+}
+</script>
+{% endblock %} 
